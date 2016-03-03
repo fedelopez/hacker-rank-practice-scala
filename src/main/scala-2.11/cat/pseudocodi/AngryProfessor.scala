@@ -1,6 +1,7 @@
 package cat.pseudocodi
 
 import java.io.InputStream
+import java.util.Scanner
 
 /**
   * https://www.hackerrank.com/challenges/angry-professor
@@ -13,23 +14,18 @@ object AngryProfessor {
     doIt(System.in).foreach(println)
   }
 
-  def doIt(stream: InputStream): List[String] = {
-    val sc = new java.util.Scanner(stream)
-    var lectures: List[Lecture] = List()
+  def doIt(stream: InputStream): Seq[String] = {
+    val sc = new Scanner(stream)
     val testCases = sc.nextInt
-    for (i <- 1 to testCases) {
-      val students = sc.nextInt
-      val minAttendance = sc.nextInt
-      var lecture = new Lecture(minAttendance, List())
-      for (j <- 1 to students) {
-        val arrivalTime = sc.nextInt
-        lecture = new Lecture(minAttendance, arrivalTime :: lecture.arrivalTimes)
-      }
-      lectures = lectures ::: List(lecture)
-    }
+    val lectures: Seq[Lecture] = for {
+      i <- 1 to testCases
+      students = sc.nextInt
+      minAttendance = sc.nextInt
+      arrivalTimes: Seq[Int] = for (j <- 1 to students) yield sc.nextInt
+    } yield new Lecture(minAttendance, arrivalTimes)
     lectures.map(l => l.arrivalTimes.count((i: Int) => i < 1) >= l.threshold).map((b: Boolean) => if (b) "NO" else "YES")
   }
 
-  case class Lecture(threshold: Int, arrivalTimes: List[Int])
+  case class Lecture(threshold: Int, arrivalTimes: Seq[Int])
 
 }

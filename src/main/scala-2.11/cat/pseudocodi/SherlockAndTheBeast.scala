@@ -15,27 +15,35 @@ object SherlockAndTheBeast {
   def main(args: Array[String]) {
     val sc = new java.util.Scanner(System.in)
     val t = sc.nextInt()
-    for (i <- 1 to t) {
-      val n = sc.nextInt()
-      println(decentNumber(n))
-    }
+    val digits: Seq[Int] = for {
+      i <- 1 to t
+      n = sc.nextInt()
+    } yield n
+    digits.foreach(i => println(decentNumber(i)))
   }
 
-  def decentNumber(numDigits: Int): Long = {
-    try {
-      val longs: Seq[Long] = for {
-        a <- 0 to numDigits
-        b = numDigits - a
-        num = (a, b) match {
-          case (`a`, `b`) if `a` % 3 == 0 && `b` % 5 == 0 => List.concat(Range(0, a).map(n => "5"), Range(0, b).map(n => "3")).mkString.toLong
-          case (`a`, `b`) if `a` % 5 == 0 && `b` % 3 == 0 => List.concat(Range(0, b).map(n => "5"), Range(0, a).map(n => "3")).mkString.toLong
-          case _ => -1
+  def decentNumber(numDigits: Int): String = {
+    val s: scala.collection.mutable.ArrayBuffer[String] = scala.collection.mutable.ArrayBuffer.empty[String]
+    for (a <- numDigits to numDigits / 2 by -1) {
+      val b: Int = a - numDigits
+      if (s.length < 2) {
+        val res = number(a, Math.abs(b))
+        if (!res.equals("-1")) {
+          s += res
         }
-      } yield num
-      longs.foldLeft(-1l)((i: Long, l: Long) => Math.max(i, l))
-    } catch {
-      case nfe: NumberFormatException => -1
+      }
     }
+    if (s.isEmpty) "-1"
+    else s.sorted.reverse.head
   }
 
+  def number(a: Int, b: Int): String = {
+    if (a % 3 == 0 && b % 5 == 0) toNumberString(a, b)
+    else if (a % 5 == 0 && b % 3 == 0) toNumberString(b, a)
+    else "-1"
+  }
+
+  def toNumberString(a: Int, b: Int): String = {
+    List.concat(Range(0, a).map(n => "5"), Range(0, b).map(n => "3")).mkString
+  }
 }

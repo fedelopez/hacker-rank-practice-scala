@@ -25,13 +25,11 @@ object SherlockAndTheBeast {
   //todo no side effects
   def decentNumber(numDigits: Int): String = {
     val s: scala.collection.mutable.ArrayBuffer[String] = scala.collection.mutable.ArrayBuffer.empty[String]
-    for (a <- numDigits to numDigits / 2 by -1) {
+    for (a <- numDigits to numDigits / 2 by -1 if s.length < 2) {
       val b: Int = a - numDigits
-      if (s.length < 2) {
-        val res = number(a, Math.abs(b))
-        if (!res.equals("-1")) {
-          s += res
-        }
+      val res = number(a, Math.abs(b))
+      if (!res.equals("-1")) {
+        s += res
       }
     }
     if (s.isEmpty) "-1"

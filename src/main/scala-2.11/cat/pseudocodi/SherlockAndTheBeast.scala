@@ -22,6 +22,7 @@ object SherlockAndTheBeast {
     digits.foreach(i => println(decentNumber(i)))
   }
 
+  //todo no side effects
   def decentNumber(numDigits: Int): String = {
     val s: scala.collection.mutable.ArrayBuffer[String] = scala.collection.mutable.ArrayBuffer.empty[String]
     for (a <- numDigits to numDigits / 2 by -1) {

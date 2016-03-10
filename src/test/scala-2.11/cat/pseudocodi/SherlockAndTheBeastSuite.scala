@@ -43,11 +43,6 @@ class SherlockAndTheBeastSuite extends FunSuite {
     assert(SherlockAndTheBeast.decentNumber(11) === "55555533333")
   }
 
-  test("For N=111") {
-    val expected: String = List.concat(Range(0, 111).map(i => "5")).mkString
-    assert(SherlockAndTheBeast.decentNumber(111) === expected)
-  }
-
   test("For N=14, 55555555533333 and all permutations of these digits are valid numbers; among them, the given number is the largest one.") {
     assert(SherlockAndTheBeast.decentNumber(14) === "55555555533333")
   }
@@ -64,8 +59,13 @@ class SherlockAndTheBeastSuite extends FunSuite {
     assert(SherlockAndTheBeast.decentNumber(19) === "5555555553333333333")
   }
 
-  test("For N=20, 33333333333333333333 is the only possible number.") {
+  test("For N=20, 33333333333333333333 is the only possible number") {
     assert(SherlockAndTheBeast.decentNumber(20) === "55555555555555533333")
+  }
+
+  test("For N=111") {
+    val expected: String = List.concat(Range(0, 111).map(i => "5")).mkString
+    assert(SherlockAndTheBeast.decentNumber(111) === expected)
   }
 
   test("For N=100000") {

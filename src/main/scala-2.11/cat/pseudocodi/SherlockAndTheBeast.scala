@@ -22,18 +22,20 @@ object SherlockAndTheBeast {
     digits.foreach(i => println(decentNumber(i)))
   }
 
-  //todo no side effects
   def decentNumber(numDigits: Int): String = {
-    val s: scala.collection.mutable.ArrayBuffer[String] = scala.collection.mutable.ArrayBuffer.empty[String]
-    for (a <- numDigits to numDigits / 2 by -1 if s.length < 2) {
-      val b: Int = a - numDigits
-      val res = number(a, Math.abs(b))
-      if (!res.equals("-1")) {
-        s += res
+
+    def doIt(a: Int, numbers: List[String]): String = {
+      if (a > numDigits / 2 && numbers.length < 2) {
+        val b: Int = Math.abs(a - numDigits)
+        val res = number(a, b)
+        if (res.equals("-1")) doIt(a - 1, numbers)
+        else doIt(a - 1, res :: numbers)
+      } else {
+        val head: Option[String] = numbers.sorted.reverse.headOption
+        head.getOrElse("-1")
       }
     }
-    if (s.isEmpty) "-1"
-    else s.sorted.reverse.head
+    doIt(numDigits, List())
   }
 
   def number(a: Int, b: Int): String = {
